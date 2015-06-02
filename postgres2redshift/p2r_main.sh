@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### LICENSE
   # Author: Vlad Dubovskiy, November 2014, DonorsChoose.org
