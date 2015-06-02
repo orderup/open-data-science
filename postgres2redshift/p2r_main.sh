@@ -79,7 +79,7 @@ then
   exit 3
 fi
 
-# Close lock file sentinal protection. 
+# Close lock file sentinal protection.
 # If you are dumping from hot standby replication server, you can wrap the code here and move removing lockfile right before SHIPPPING TABLES TO S3
 # This is here for your convenience, it's not a requirement to have this.
   rm $LOCKFILE
@@ -107,7 +107,7 @@ do
 done
 
 # dumping custom tables
-for (( i = 0 ; i < ${#CTSQL[@]} ; i++ )) 
+for (( i = 0 ; i < ${#CTSQL[@]} ; i++ ))
 do
   $PGSQL_BIN/psql -h $DBHOST -p $DBHOSTPORT -U $DBOWNER -d $DBNAME -c \
     "\copy ( ${CTSQL[$i]} ) TO STDOUT (FORMAT csv, DELIMITER '|', HEADER 0)" \
@@ -231,7 +231,7 @@ echo START RESTORE TABLES IN REDSHIFT
 date
 
 # Copy a table into Redshift from S3 file:
-  # To test without the data load, add NOLOAD to the copy command. 
+  # To test without the data load, add NOLOAD to the copy command.
   # CSV cannot be used with FIXEDWIDTH, REMOVEQUOTES, or ESCAPE.
   # Remove MAXERROR from production. Analysize /tmp/p2r.err for error log
   # NULLify empties: BLANKSASNULL, EMPTYASNULL.
@@ -265,12 +265,15 @@ $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
   GRANT ALL ON SCHEMA $RSSCHEMA TO $RSUSER;
   GRANT USAGE ON SCHEMA $RSSCHEMA TO $RSUSER;
   GRANT SELECT ON ALL TABLES IN SCHEMA $RSSCHEMA TO $RSUSER;
+  GRANT ALL ON SCHEMA $RSSCHEMA TO $LOOKERUSER;
+  GRANT USAGE ON SCHEMA $RSSCHEMA TO $LOOKERUSER;
+  GRANT SELECT ON ALL TABLES IN SCHEMA $RSSCHEMA TO $LOOKERUSER;
   COMMENT ON SCHEMA $RSSCHEMA IS 'analytics data schema';" 1>>$STDOUT 2>>$STDERR
 
 echo RESTORE TABLES COMPLETE
 date
 
-echo START VACUUM ANALYZE 
+echo START VACUUM ANALYZE
 
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c "vacuum; analyze;" 1>>$STDOUT 2>>$STDERR
 
@@ -288,7 +291,7 @@ echo "***********************************"
   # solution: DATEFORMAT 'auto' ACCEPTANYDATE options, which NULLs any unrecognized date formats
 
 # Query to check errors in redshift
-  # select starttime, filename, line_number, colname, position, raw_line, raw_field_value, err_code, err_reason 
+  # select starttime, filename, line_number, colname, position, raw_line, raw_field_value, err_code, err_reason
   # from stl_load_errors
   # where filename like ('%table_name%')
   # order by starttime DESC
