@@ -36,9 +36,13 @@ STDOUT=/tmp/p2r.out
 LOCKFILE=/tmp/p2r.lock
 
 # do not add views or functions to redshift. These are actual names of tables in your Postgres database
-TABLES='customers orders order_notifications'
+TABLES='orders customers order_notifications'
 
 # Custom Tables [CT] (some tables are huge due to text data, so you can define custom SQL to either munge your tables or only select certain columns for migration)
 # The names of the variables must match actual tables names in the schema. Order commands inside CTSQL list and table names inside CTNAMES list so the indexes of the list match.
 # Custom tables must have all the same columns as defined in schema, or you'll have to define a dummy table in your DB or adjust python schema part of the script to accomdate your new table structures
   # If you are just dropping columns (like me), then fill them in with something
+
+## declare an array variable
+declare -a CTSQL=( )
+CTNAMES=( )
