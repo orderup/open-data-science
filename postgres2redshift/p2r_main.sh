@@ -183,7 +183,12 @@ sed -i.bak '/ALTER TABLE jbpm*/,/;/d' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/ON DELETE CASCADE//g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/ON UPDATE CASCADE//g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/SET default.*//g' $SCHEMADIR/schema_clean.sql
+#convert any weakly defined numeric columns to numeric(19,6)
 sed -i.bak 's/numeric(45/numeric(37/g' $SCHEMADIR/schema_clean.sql
+sed -i.bak 's/numeric,/numeric(19,6),/g' $SCHEMADIR/schema_clean.sql
+sed -i.bak 's/numeric /numeric(19,6) /g' $SCHEMADIR/schema_clean.sql
+sed -i.bak 's/numeric$/numeric(19,6)/g' $SCHEMADIR/schema_clean.sql
+#convert json column to text
 sed -i.bak 's/json NOT NULL/text NOT NULL/g' $SCHEMADIR/schema_clean.sql
 # Replace columns named "open" with "open_date", as "open" is a reserved word. Other Redshift reserved words: time, user
 sed -i.bak 's/open character/open_date character/g' $SCHEMADIR/schema_clean.sql
