@@ -100,6 +100,7 @@ echo DUMPING TABLES
 date
 
 # dumping original tables
+PGPASSWORD=$PGPW
 for table in $TABLES
 do
   $PGSQL_BIN/psql -h $DBHOST -p $DBHOSTPORT -U $DBOWNER -d $DBNAME -c \
@@ -108,6 +109,7 @@ do
 done
 
 # dumping custom tables
+PGPASSWORD=$PGPW
 for (( i = 0 ; i < ${#CTSQL[@]} ; i++ ))
 do
   $PGSQL_BIN/psql -h $DBHOST -p $DBHOSTPORT -U $DBOWNER -d $DBNAME -c \
@@ -152,6 +154,7 @@ date
 rm -rf $SCHEMADIR/schema*
 
 # Dump DB's schema
+PGPASSWORD=$PGPW
 $PGSQL_BIN/pg_dump -h $DBHOST -p $DBHOSTPORT -U $DBOWNER --schema-only --schema=$DBSCHEMA $DBNAME > $SCHEMADIR/schema.sql
 
 ##### 1. Cleanup the schema to conform to RedShift syntax
@@ -210,6 +213,7 @@ sed -n '/ALTER TABLE/,/;/p' $SCHEMADIR/schema_clean.sql >> $SCHEMADIR/schema_fin
 sed -i "1 i SET search_path TO ${TMPSCHEMA};" $SCHEMADIR/schema_final.sql
 
 echo CREATE NEW TEMP SCHEMA
+PGPASSWORD=$RSPW
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
   "CREATE SCHEMA $TMPSCHEMA;
   SET search_path TO $TMPSCHEMA;
@@ -219,7 +223,7 @@ $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
   COMMENT ON SCHEMA $TMPSCHEMA IS 'temporary refresh schema';" 1>>$STDOUT 2>>$STDERR
 
 ##### 5. Load schema file into TMPSCHEMA
-
+PGPASSWORD=$RSPW
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -f $SCHEMADIR/schema_final.sql 1>>$STDOUT 2>>$STDERR
 
 
@@ -238,6 +242,7 @@ date
   # NULLify empties: BLANKSASNULL, EMPTYASNULL.
 
 # restore original tables
+PGPASSWORD=$RSPW
 for table in $TABLES
 do
   $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
@@ -248,6 +253,7 @@ do
 done
 
 # restore custom tables
+PGPASSWORD=$RSPW
 for table in ${CTNAMES[@]}
 do
   $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
@@ -258,6 +264,7 @@ do
 done
 
 # Swap temp_schema for production schema
+PGPASSWORD=$RSPW
 echo DROP $RSSCHEMA AND RENAME $TMPSCHEMA SCHEMA TO $RSSCHEMA
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
   "SET search_path TO $RSSCHEMA;
@@ -275,7 +282,7 @@ echo RESTORE TABLES COMPLETE
 date
 
 echo START VACUUM ANALYZE
-
+PGPASSWORD=$RSPW
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c "vacuum; analyze;" 1>>$STDOUT 2>>$STDERR
 
 echo BULK REFRESH COMPLETE

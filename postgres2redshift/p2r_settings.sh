@@ -12,7 +12,9 @@
 ##########
 
 # SOURCE DB (Postgres)
-#HEROKU_POSTGRESQL_DB_CONN_STRING=
+#PGHOST=
+#PGUSER=
+#PGPW=
 #DBSCHEMA=public # source schema on your postgres DB. Public is default
 # TARGET DB (Redshift)
 #RSHOST=your_instance_name.redshift.amazonaws.com
@@ -22,6 +24,7 @@
 #RSKEY=redshift_api_key
 #RSSECRET=redshift_api_secret
 #RSUSER=your_user_name # name of the non-superuser! who will get read/write access to your schemas and tables. It's critical that you create this user that is not sudo to avoid concurrent connection limits
+#RSPW=password for Redshift DB
 #RSSCHEMA=public # target schema on your redshift cluster. You could change this, but public is the default schema.
 #TMPSCHEMA=temp_refresh
 # DIRECTORIES
