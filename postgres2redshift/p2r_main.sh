@@ -25,60 +25,8 @@ PROGNAME=`basename $0`
 
 usage ()
 {
-  echo "usage:  $PROGNAME [-h hostname] [-n] -d dbname -p dbhostport -U username -f filename" >&2
-  echo "        -d dbname      (name of postgres database)" >&2
-  echo "        -U dbuser      (name of database schema owner)" >&2
-  echo "        -h dbhost      (name of database host server)" >&2
-  echo "        -p dbhostport  (number of database host port)" >&2
+  echo "usage:  $PROGNAME"
 }
-
-DBHOST=''
-DBNAME=''
-DBOWNER=''
-DBHOSTPORT=''
-
-# Break up command-line options for easy parsing.  Reorders legal
-# options in front of --, and all others after.  Note that the
-# 2-steps with "$@" is essential to preserve multi-word optargs.
-GETOPT=`getopt -n $PROGNAME -o h:d:U:f:T:p:n -- "$@"`
-if [ $? != 0 ] ; then usage ; rm $LOCKFILE; exit 1 ; fi
-eval set -- "$GETOPT"
-
-while true
-do
-  case "$1" in
-    -\?) usage 2>&1; rm $LOCKFILE; exit 0 ;;
-    -h) DBHOST="$2"; shift 2;;
-    -d) DBNAME="$2"; shift 2;;
-    -U) DBOWNER="$2"; shift 2;;
-    -p) DBHOSTPORT="$2"; shift 2;;
-    --) shift ; break ;;
-    * ) echo "Internal error!" >&2; rm $LOCKFILE; exit 1 ;;
-  esac
-done
-
-# Script invoked with extra command-line args?
-if [ $# -ne "0" ]
-then
-  echo "$PROGNAME: unrecognized parameter -- $*" >&2
-  echo >&2
-  usage
-  rm $LOCKFILE
-  exit 2
-fi
-
-# Script invoked without required parameters?
-if [ -z "$DBNAME" -o -z "$DBOWNER" ]
-then
-  REQUIRED=''
-  if [ -z "$DBNAME" ] ;    then REQUIRED="$REQUIRED -d"; fi
-  if [ -z "$DBOWNER" ] ;    then REQUIRED="$REQUIRED -U"; fi
-  echo "$PROGNAME: missing required parameter(s) --" $REQUIRED >&2
-  echo >&2
-  usage
-  rm $LOCKFILE
-  exit 3
-fi
 
 # Close lock file sentinal protection.
 # If you are dumping from hot standby replication server, you can wrap the code here and move removing lockfile right before SHIPPPING TABLES TO S3
@@ -103,7 +51,7 @@ date
 PGPASSWORD=$PGPW
 for table in $TABLES
 do
-  $PGSQL_BIN/psql -h $DBHOST -p $DBHOSTPORT -U $DBOWNER -d $DBNAME -c \
+  $PGSQL_BIN/psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDB -c \
     "\copy ${table} TO STDOUT (FORMAT csv, DELIMITER '|', HEADER 0)" \
     | gzip > $DATADIR/${table}.txt.gz
 done
@@ -112,7 +60,7 @@ done
 PGPASSWORD=$PGPW
 for (( i = 0 ; i < ${#CTSQL[@]} ; i++ ))
 do
-  $PGSQL_BIN/psql -h $DBHOST -p $DBHOSTPORT -U $DBOWNER -d $DBNAME -c \
+  $PGSQL_BIN/psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDB -c \
     "\copy ( ${CTSQL[$i]} ) TO STDOUT (FORMAT csv, DELIMITER '|', HEADER 0)" \
     | gzip > $DATADIR/${CTNAMES[$i]}.txt.gz
 done
@@ -155,7 +103,7 @@ rm -rf $SCHEMADIR/schema*
 
 # Dump DB's schema
 PGPASSWORD=$PGPW
-$PGSQL_BIN/pg_dump -h $DBHOST -p $DBHOSTPORT -U $DBOWNER --schema-only --schema=$DBSCHEMA $DBNAME > $SCHEMADIR/schema.sql
+$PGSQL_BIN/pg_dump -h $PGHOST -p $PGPORT -U $PGUSER --schema-only --schema=$DBSCHEMA $PGDB > $SCHEMADIR/schema.sql
 
 ##### 1. Cleanup the schema to conform to RedShift syntax
 
