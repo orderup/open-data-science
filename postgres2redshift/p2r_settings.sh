@@ -40,139 +40,139 @@ STDOUT=/tmp/p2r.out
 LOCKFILE=/tmp/p2r.lock
 
 # do not add views or functions to redshift. These are actual names of tables in your Postgres database
-TABLES='active_cart_counts \
-adjustments \
-affiliates \
-beacons \
-building_groups \
-buildings \
-campus_payment_cards \
-canonicalized_json_menus \
-canonicalized_menus \
-cart_coupons \
-cart_item_options \
-cart_items \
-cart_participants \
-carts \
-cohort_memberships \
-cohort_service_cohorts \
-cohort_services \
-cohorts \
-content \
-coupons \
-credit_batches \
-credit_cards \
-credit_items \
-customer_addresses \
-customer_campus_cards \
-customer_coupon_uses \
-customer_information_requests \
-customer_phones \
-customers \
-daily_order_counts \
-deliveries \
-deliveries_hours \
-delivery_comments \
-delivery_estimates \
-delivery_log_entries \
-delivery_service_health_features \
-delivery_service_health_models \
-delivery_service_health_scores \
-delivery_service_random_forests \
-delivery_services \
-delivery_sign_ups \
-delivery_status_updates \
-delivery_steps \
-delivery_zones \
-devices \
-dispatches \
-driver_availabilities \
-driver_availability_blocks \
-driver_broadcasts \
-driver_messages \
-driver_points \
-driver_restaurant_bans \
-driver_work_hours \
-drivers \
-estimation_model_feature_values \
-estimation_model_features \
-estimation_models \
-franchise_contacts \
-gift_cards \
-hosted_sites \
-jobs \
-loyalty_cash_transactions \
-market_campus_payment_cards \
-market_cities \
-market_dispatch_notes \
-market_scorecards \
-market_weather_hours \
-markets \
-menu_categories \
-menu_category_option_group_option_prices \
-menu_category_option_group_options \
-menu_category_option_groups \
-menu_category_sizes \
-menu_descriptors \
-menu_item_descriptors \
-menu_item_option_group_option_prices \
-menu_item_option_group_options \
-menu_item_option_groups \
-menu_item_sizes \
-menu_items \
-menu_options \
-menu_sizes \
-menu_updates \
-monthly_order_counts \
-newbie_codes \
-notification_schedule_changes \
-numbers \
-option_group_option_prices \
-option_group_options \
-option_groups \
-order_coupons \
-order_notifications \
-orders \
-orders_payments \
-pay_period_account_entries \
-payments \
-pex_cards \
-pex_transactions \
-print_menus \
-promo_codes \
-receipts \
-referral_codes \
-referrals \
-reliability_score_events \
-restaurant_campus_payment_cards \
-restaurant_categories \
-restaurant_categorizations \
-restaurant_contacts \
-restaurant_drive_times \
-restaurant_hours \
-restaurant_temporary_hours \
-restaurant_users \
-restaurants \
-scorecards \
-settings \
-shift_assignment_delivery_service_changes \
-shift_assignments \
-shift_predictions \
-shift_templates \
-shifts \
-shutdown_group_restaurants \
-shutdown_groups \
-shutdown_messages \
-sign_up_links \
-sms_messages \
-sms_number_reservations \
-sms_numbers \
-specials \
-surveys \
-temporary_shutdowns \
-users \
-voice_calls \
-work_segments \
+TABLES='active_cart_counts 
+adjustments
+affiliates
+beacons
+building_groups
+buildings
+campus_payment_cards
+canonicalized_json_menus
+canonicalized_menus
+cart_coupons
+cart_item_options
+cart_items
+cart_participants
+carts
+cohort_memberships
+cohort_service_cohorts
+cohort_services
+cohorts
+content
+coupons
+credit_batches
+credit_cards
+credit_items
+customer_addresses
+customer_campus_cards
+customer_coupon_uses
+customer_information_requests
+customer_phones
+customers
+daily_order_counts
+deliveries
+deliveries_hours
+delivery_comments
+delivery_estimates
+delivery_log_entries
+delivery_service_health_features
+delivery_service_health_models
+delivery_service_health_scores
+delivery_service_random_forests
+delivery_services
+delivery_sign_ups
+delivery_status_updates
+delivery_steps
+delivery_zones
+devices
+dispatches
+driver_availabilities
+driver_availability_blocks
+driver_broadcasts
+driver_messages
+driver_points
+driver_restaurant_bans
+driver_work_hours
+drivers
+estimation_model_feature_values
+estimation_model_features
+estimation_models
+franchise_contacts
+gift_cards
+hosted_sites
+jobs
+loyalty_cash_transactions
+market_campus_payment_cards
+market_cities
+market_dispatch_notes
+market_scorecards
+market_weather_hours
+markets
+menu_categories
+menu_category_option_group_option_prices
+menu_category_option_group_options
+menu_category_option_groups
+menu_category_sizes
+menu_descriptors
+menu_item_descriptors
+menu_item_option_group_option_prices
+menu_item_option_group_options
+menu_item_option_groups
+menu_item_sizes
+menu_items
+menu_options
+menu_sizes
+menu_updates
+monthly_order_counts
+newbie_codes
+notification_schedule_changes
+numbers
+option_group_option_prices
+option_group_options
+option_groups
+order_coupons
+order_notifications
+orders
+orders_payments
+pay_period_account_entries
+payments
+pex_cards
+pex_transactions
+print_menus
+promo_codes
+receipts
+referral_codes
+referrals
+reliability_score_events
+restaurant_campus_payment_cards
+restaurant_categories
+restaurant_categorizations
+restaurant_contacts
+restaurant_drive_times
+restaurant_hours
+restaurant_temporary_hours
+restaurant_users
+restaurants
+scorecards
+settings
+shift_assignment_delivery_service_changes
+shift_assignments
+shift_predictions
+shift_templates
+shifts
+shutdown_group_restaurants
+shutdown_groups
+shutdown_messages
+sign_up_links
+sms_messages
+sms_number_reservations
+sms_numbers
+specials
+surveys
+temporary_shutdowns
+users
+voice_calls
+work_segments
 worker_dependency_logs'
 
 # Custom Tables [CT] (some tables are huge due to text data, so you can define custom SQL to either munge your tables or only select certain columns for migration)
