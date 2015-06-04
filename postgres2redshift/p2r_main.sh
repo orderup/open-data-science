@@ -135,6 +135,7 @@ sed -i.bak '/integer\[\]/d' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/ON DELETE CASCADE//g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/ON UPDATE CASCADE//g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/SET default.*//g' $SCHEMADIR/schema_clean.sql
+sed -i.bak 's/ NOT NULL//g' $SCHEMADIR/schema_clean.sql
 #convert any weakly defined numeric columns to numeric(19,6)
 sed -i.bak 's/numeric(45/numeric(37/g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/numeric,/numeric(19,6),/g' $SCHEMADIR/schema_clean.sql
@@ -207,7 +208,7 @@ do
     "SET search_path TO $TMPSCHEMA;
     copy ${table} from 's3://$S3BUCKET/${table}.txt.gz' \
       CREDENTIALS 'aws_access_key_id=$RSKEY;aws_secret_access_key=$RSSECRET' \
-      CSV DELIMITER '|' IGNOREHEADER 0 ACCEPTINVCHARS TRUNCATECOLUMNS GZIP TRIMBLANKS BLANKSASNULL EMPTYASNULL DATEFORMAT 'auto' ACCEPTANYDATE COMPUPDATE ON MAXERROR 100;" 1>>$STDOUT 2>>$STDERR
+      CSV DELIMITER '|' IGNOREHEADER 0 ACCEPTINVCHARS TRUNCATECOLUMNS GZIP TRIMBLANKS BLANKSASNULL EMPTYASNULL DATEFORMAT 'auto' ACCEPTANYDATE COMPUPDATE ON MAXERROR 500;" 1>>$STDOUT 2>>$STDERR
 done
 
 # restore custom tables
