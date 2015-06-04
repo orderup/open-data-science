@@ -128,9 +128,9 @@ sed -i.bak '/CREATE TABLE dba_snapshot*/,/);/d' $SCHEMADIR/schema_clean.sql
 sed -i.bak '/CREATE TABLE jbpm*/,/);/d' $SCHEMADIR/schema_clean.sql
 sed -i.bak '/ALTER TABLE jbpm*/,/;/d' $SCHEMADIR/schema_clean.sql
 # Remove unsupported types
-sed -i.bak '/geometry(/d' $SCHEMADIR/schema_clean.sql
-sed -i.bak '/int4range/d' $SCHEMADIR/schema_clean.sql
-sed -i.bak '/integer\[\]/d' $SCHEMADIR/schema_clean.sql
+sed -i.bak '/geometry(.*)/text/g' $SCHEMADIR/schema_clean.sql
+sed -i.bak '/int4range/text/g' $SCHEMADIR/schema_clean.sql
+sed -i.bak '/integer\[\]/text/g' $SCHEMADIR/schema_clean.sql
 # Remove unsupported commands and types (json, numeric(45)
 sed -i.bak 's/ON DELETE CASCADE//g' $SCHEMADIR/schema_clean.sql
 sed -i.bak 's/ON UPDATE CASCADE//g' $SCHEMADIR/schema_clean.sql
