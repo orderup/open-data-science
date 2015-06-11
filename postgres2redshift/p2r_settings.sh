@@ -136,7 +136,6 @@ orders
 orders_payments
 pay_period_account_entries
 payments
-pex_cards
 pex_transactions
 print_menus
 promo_codes
@@ -172,8 +171,7 @@ surveys
 temporary_shutdowns
 users
 voice_calls
-work_segments
-worker_dependency_logs'
+work_segments'
 
 # Custom Tables [CT] (some tables are huge due to text data, so you can define custom SQL to either munge your tables or only select certain columns for migration)
 # The names of the variables must match actual tables names in the schema. Order commands inside CTSQL list and table names inside CTNAMES list so the indexes of the list match.
