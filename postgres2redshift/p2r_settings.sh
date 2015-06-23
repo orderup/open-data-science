@@ -43,6 +43,7 @@ LOCKFILE=/tmp/p2r.lock
 TABLES='active_cart_counts 
 adjustments
 affiliates
+audits
 beacons
 building_groups
 buildings
