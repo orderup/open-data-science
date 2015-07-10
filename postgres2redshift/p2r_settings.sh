@@ -100,6 +100,8 @@ estimation_model_features
 estimation_models
 franchise_contacts
 gift_cards
+goal_types
+goal_values
 hosted_sites
 jobs
 loyalty_cash_transactions
