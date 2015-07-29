@@ -152,6 +152,7 @@ restaurant_categorizations
 restaurant_contacts
 restaurant_drive_times
 restaurant_hours
+restaurant_requests
 restaurant_temporary_hours
 restaurant_users
 restaurants
