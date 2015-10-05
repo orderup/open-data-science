@@ -5,8 +5,12 @@
   # Special thanks to: David Crane for code snippets on parsing command args
   # License: Copyright (c) This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
-# Fail early, fail often... Failing toooo often
-#set -e
+# Fail early, fail often
+set -e
+
+function clean_up {
+  
+}
 
 # Load settings, tables file
 cd /dump/scripts/open-data-science/postgres2redshift
@@ -178,8 +182,7 @@ sed -i "1 i SET search_path TO ${TMPSCHEMA};" $SCHEMADIR/schema_final.sql
 echo CREATE NEW TEMP SCHEMA
 export PGPASSWORD=$RSPW
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
-  "DROP SCHEMA $TMPSCHEMA;
-  CREATE SCHEMA $TMPSCHEMA;
+  "CREATE SCHEMA $TMPSCHEMA;
   SET search_path TO $TMPSCHEMA;
   GRANT ALL ON SCHEMA $TMPSCHEMA TO $RSUSER;
   GRANT USAGE ON SCHEMA $TMPSCHEMA TO $RSUSER;
