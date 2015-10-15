@@ -175,6 +175,7 @@ surveys
 temporary_shutdowns
 users
 voice_calls
+wait_pool_entries
 work_segments'
 
 # Custom Tables [CT] (some tables are huge due to text data, so you can define custom SQL to either munge your tables or only select certain columns for migration)

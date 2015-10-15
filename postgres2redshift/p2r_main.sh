@@ -178,7 +178,7 @@ sed -i "1 i SET search_path TO ${TMPSCHEMA};" $SCHEMADIR/schema_final.sql
 echo CREATE NEW TEMP SCHEMA
 export PGPASSWORD=$RSPW
 $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
-  "DROP SCHEMA $TMPSCHEMA;
+  "DROP SCHEMA IF EXISTS $TMPSCHEMA;
   CREATE SCHEMA $TMPSCHEMA;
   SET search_path TO $TMPSCHEMA;
   GRANT ALL ON SCHEMA $TMPSCHEMA TO $RSUSER;
@@ -222,7 +222,8 @@ for table in ${CTNAMES[@]}
 do
   $PGSQL_BIN/psql -h $RSHOST -p $RSHOSTPORT -U $RSADMIN -d $RSNAME -c \
     "SET search_path TO $TMPSCHEMA;
-    copy ${table} from 's3://$S3BUCKET/${table}.txt.gz' \
+export PGPASSWORD=$RSPW
+for table in $TABLES    copy ${table} from 's3://$S3BUCKET/${table}.txt.gz' \
       CREDENTIALS 'aws_access_key_id=$RSKEY;aws_secret_access_key=$RSSECRET' \
       CSV DELIMITER '|' IGNOREHEADER 0 ACCEPTINVCHARS TRUNCATECOLUMNS GZIP TRIMBLANKS BLANKSASNULL EMPTYASNULL DATEFORMAT 'auto' ACCEPTANYDATE COMPUPDATE ON MAXERROR 100;" 1>>$STDOUT 2>>$STDERR
 done
