@@ -45,6 +45,8 @@ adjustments
 affiliates
 audits
 beacons
+boost_competitions
+boost_competition_results
 building_groups
 buildings
 campus_payment_cards
